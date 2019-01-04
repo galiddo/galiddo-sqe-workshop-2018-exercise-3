@@ -107,9 +107,9 @@ const exTor = (body) => {
     Flow.push(last + '->' +body.id.name+'Dec');
     last = body.id.name+'Dec';
 
-    if((body.init.type==='Identifier'||body.init.type ==='Literal') &&VARS[body.id.name])
+ /*   if((body.init.type==='Identifier'||body.init.type ==='Literal') &&VARS[body.id.name])
         body.init = VARS[body.init.name];
-    else
+    else*/
         replaceHandler(body.init);
 
     VARS[body.id.name] = body.init;
@@ -127,7 +127,7 @@ const exTion = (declaration) => {
 
 function GetTemplate (isBool) {
     let ans = '|';
-    if(isBool===1)
+    if(isBool)
     {
         ans+='Bool';
     }
@@ -208,7 +208,49 @@ const exRet = (parsedcode) => {
         replaceHandler(parsedcode.argument);
         */
 };
-/*const exWhile = (parsedcode) => {
+/*
+let whileCount = 0;
+const exWhile = (parsedcode) => {
+    let Ttmp = tmpCount++;
+    let Twhile = IfCount++;
+
+    if((parsedcode.test.type==='Identifier'||parsedcode.test.type ==='Literal') &&VARS[parsedcode.test.name])
+        parsedcode.test = VARS[parsedcode.test.name];
+    else
+        replaceHandler(parsedcode.test);
+
+    let InputString = '';
+    IV.forEach(function (body) {
+        InputString+='let ';
+        InputString+=body;
+        InputString+=';';
+    });
+
+    let isx = eval(InputString+escodegen.generate(parsedcode.test));
+    run = 0;
+    if(isx) {run = 1;}
+    //else { run=0;}
+    Dec.push('if'+Tif+'=>'+'condition'+': '+Pars(parsedcode.test)+GetTemplate(isx));
+    Flow.push(last+'->'+'if'+Tif);
+
+    last = 'if'+Tif+'(yes)';
+    runExtractor(parsedcode.consequent);
+
+    Dec.push('tmp'+Ttmp+'=>'+'operation'+': '+'tmp'+'|Green');
+    Flow.push(last+'->'+'tmp'+Ttmp);
+
+
+    last = 'if'+Tif+'(no)';
+    if(parsedcode.alternate != null)
+    {   run = 0;
+        if(!isx) {run = 1;}
+        runExtractor(parsedcode.alternate);
+        Flow.push(last+'->'+'tmp'+Ttmp);
+    }
+    run=0;
+    last = 'tmp'+Ttmp;
+
+
 
     if((parsedcode.test.type==='Identifier'||parsedcode.test.type ==='Literal') &&VARS[parsedcode.test.name])
         parsedcode.test = VARS[parsedcode.test.name];
@@ -218,7 +260,7 @@ const exRet = (parsedcode) => {
     runExtractor(parsedcode.body);
 
 };*/
-const Pars = (toParse) => {return (toParse!=null)?escodegen.generate(toParse):'';};
+const Pars = (toParse) => {return /*(toParse!=null)?*/escodegen.generate(toParse)/*:''*/;};
 const deepcopy = (validJSON) => {
     return JSON.parse(JSON.stringify(validJSON));
 };
