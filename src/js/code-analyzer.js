@@ -57,7 +57,7 @@ const getExtractor = (parsedCode) =>
     //map['SequenceExpression'] = exSeq;
     map['AssignmentExpression'] = exAss;
     map['ReturnStatement'] = exRet;
-    //map['WhileStatement'] = exWhile;
+    map['WhileStatement'] = exWhile;
     map['IfStatement'] = exIf;
     map['VariableDeclarator'] = exTor;//
     map['VariableDeclaration'] = exTion;
@@ -208,16 +208,21 @@ const exRet = (parsedcode) => {
         replaceHandler(parsedcode.argument);
         */
 };
-/*
+
 let whileCount = 0;
+
+let NULLCount = 0;
 const exWhile = (parsedcode) => {
     let Ttmp = tmpCount++;
-    let Twhile = IfCount++;
+    let Twhile = whileCount++;
+    let TNULL = NULLCount++;
 
     if((parsedcode.test.type==='Identifier'||parsedcode.test.type ==='Literal') &&VARS[parsedcode.test.name])
         parsedcode.test = VARS[parsedcode.test.name];
     else
         replaceHandler(parsedcode.test);
+
+
 
     let InputString = '';
     IV.forEach(function (body) {
@@ -225,41 +230,27 @@ const exWhile = (parsedcode) => {
         InputString+=body;
         InputString+=';';
     });
-
     let isx = eval(InputString+escodegen.generate(parsedcode.test));
-    run = 0;
-    if(isx) {run = 1;}
-    //else { run=0;}
-    Dec.push('if'+Tif+'=>'+'condition'+': '+Pars(parsedcode.test)+GetTemplate(isx));
-    Flow.push(last+'->'+'if'+Tif);
 
-    last = 'if'+Tif+'(yes)';
-    runExtractor(parsedcode.consequent);
-
-    Dec.push('tmp'+Ttmp+'=>'+'operation'+': '+'tmp'+'|Green');
-    Flow.push(last+'->'+'tmp'+Ttmp);
+    Dec.push('NULL'+TNULL+'=>'+'condition'+': '+Pars(parsedcode.test)+GetTemplate(0));
+    Flow.push(last+'->'+'NULL'+TNULL);
+    last = 'NULL'+TNULL;
 
 
-    last = 'if'+Tif+'(no)';
-    if(parsedcode.alternate != null)
-    {   run = 0;
-        if(!isx) {run = 1;}
-        runExtractor(parsedcode.alternate);
-        Flow.push(last+'->'+'tmp'+Ttmp);
-    }
-    run=0;
-    last = 'tmp'+Ttmp;
+    Dec.push('while'+Twhile+'=>'+'condition'+': '+Pars(parsedcode.test)+GetTemplate(isx));
+    Flow.push(last+'->'+'while'+Twhile);
 
-
-
-    if((parsedcode.test.type==='Identifier'||parsedcode.test.type ==='Literal') &&VARS[parsedcode.test.name])
-        parsedcode.test = VARS[parsedcode.test.name];
-    else
-        replaceHandler(parsedcode.test);
-
+    /////yes
+    last = 'while'+Twhile+'(yes)';
     runExtractor(parsedcode.body);
 
-};*/
+    Flow.push(last+'->'+'TNULL'+Twhile);
+    last = 'while'+Twhile+'(no)';
+
+
+
+
+};
 const Pars = (toParse) => {return /*(toParse!=null)?*/escodegen.generate(toParse)/*:''*/;};
 const deepcopy = (validJSON) => {
     return JSON.parse(JSON.stringify(validJSON));
@@ -284,7 +275,7 @@ const exIf = (parsedcode) => {
     run = 0;
     if(isx) {run = 1;}
     //else { run=0;}
-    Dec.push('if'+Tif+'=>'+'condition'+': '+Pars(parsedcode.test)+GetTemplate(isx));
+    Dec.push('if'+Tif+'=>'+'condition'+': '+Pars(parsedcode.test)+GetTemplate(1));
     Flow.push(last+'->'+'if'+Tif);
 
     last = 'if'+Tif+'(yes)';
