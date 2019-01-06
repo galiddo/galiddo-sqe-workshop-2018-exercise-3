@@ -10,7 +10,7 @@ $(document).ready(function () {
         let codeToParse = $('#codePlaceholder').val();
         let inputVector = $('#inputV').val();
         let parsedCode = parseCode(codeToParse,inputVector);
-        var diagram = flowchart.parse(parsedCode);
+        var diagram = flowchart.parse(parsedCode.replace('undefined',''));
         diagram.drawSVG('diagram' ,{'x': 0,
             'y': 0,
             'line-width': 3,

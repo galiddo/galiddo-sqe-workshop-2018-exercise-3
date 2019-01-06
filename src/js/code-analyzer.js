@@ -230,11 +230,11 @@ const exWhile = (parsedcode) => {
         InputString+=body;
         InputString+=';';
     });
-    let isx = eval(InputString+escodegen.generate(parsedcode.test));
-
-    Dec.push('NULL'+TNULL+'=>'+'condition'+': '+Pars(parsedcode.test)+GetTemplate(0));
-    Flow.push(last+'->'+'NULL'+TNULL);
-    last = 'NULL'+TNULL;
+    let isx = InputString+escodegen.generate(parsedcode.test);
+    isx = eval(isx);
+    Dec.push('nULL'+TNULL+'=>'+'operation'+': '+Pars(parsedcode.test)+GetTemplate(0));
+    Flow.push(last+'->'+'nULL'+TNULL);
+    last = 'nULL'+TNULL;
 
 
     Dec.push('while'+Twhile+'=>'+'condition'+': '+Pars(parsedcode.test)+GetTemplate(isx));
@@ -242,9 +242,10 @@ const exWhile = (parsedcode) => {
 
     /////yes
     last = 'while'+Twhile+'(yes)';
+    run = isx;
     runExtractor(parsedcode.body);
-
-    Flow.push(last+'->'+'TNULL'+Twhile);
+    run = 1;
+    Flow.push(last+'->'+'nULL'+TNULL);
     last = 'while'+Twhile+'(no)';
 
 
@@ -290,9 +291,10 @@ const exIf = (parsedcode) => {
     {   run = 0;
         if(!isx) {run = 1;}
         runExtractor(parsedcode.alternate);
-        Flow.push(last+'->'+'tmp'+Ttmp);
+
     }
-    run=0;
+    Flow.push(last+'->'+'tmp'+Ttmp);
+
     last = 'tmp'+Ttmp;
 
 
